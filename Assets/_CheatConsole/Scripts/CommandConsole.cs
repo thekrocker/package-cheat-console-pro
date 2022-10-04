@@ -20,7 +20,7 @@ public class CommandConsole
     {
         UnityEvent action = new();
         action.AddListener(Command.Invoke);
-        
+
         _commandData.Add(new CommandData()
         {
             id = id,
@@ -100,10 +100,18 @@ public class CommandConsole
         _consoleElements.scrollRect.verticalNormalizedPosition = 0f;
     }
 
+    private bool _toggleConsole;
+
     public void ToggleConsole()
     {
-        _consoleElements.consoleCanvas.SetActive(true);
-        if (_consoleElements.consoleCanvas.activeInHierarchy) ActivateInputField();
+        _toggleConsole = !_toggleConsole;
+        ConsoleCanvasEnabled(_toggleConsole);
+        if (_toggleConsole) ActivateInputField();
+    }
+
+    public void ConsoleCanvasEnabled(bool s)
+    {
+        _consoleElements.consoleCanvas.enabled = s;
     }
 
     public void ClearInputText()

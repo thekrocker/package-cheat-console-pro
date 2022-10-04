@@ -43,6 +43,7 @@ public class CommandConsoleManager : MonoBehaviour
     private void InitCheatConsole()
     {
         _commandConsole = new CommandConsole(commandData, consoleElements);
+        _commandConsole.ConsoleCanvasEnabled(false);
     }
     private void CreateInstance()
     {

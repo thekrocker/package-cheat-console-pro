@@ -6,7 +6,7 @@ using UnityEngine.UI;
 [Serializable]
 public class ConsoleElements
 {
-    public GameObject consoleCanvas;
+    public Canvas consoleCanvas;
     public ScrollRect scrollRect;
     public TextMeshProUGUI consoleText;
     public TMP_InputField inputField;
