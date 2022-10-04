@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CheatConsole
 {
@@ -17,12 +18,15 @@ public class CheatConsole
 
     public void CreateCommand(string id, Action Command, string description = "", string format = "")
     {
+        UnityEvent action = new();
+        action.AddListener(Command.Invoke);
+        
         _commandData.Add(new CommandData()
         {
             id = id,
             description = description,
             format = format,
-            OnInputAction = Command
+            OnInput = action
         });
     }
 
@@ -77,8 +81,7 @@ public class CheatConsole
             {
                 AddTextToConsole(_input);
                 AddSuccessText();
-                cheat.RaiseUnityEvent();
-                cheat.RaiseAction();
+                cheat.RaiseEvent();
                 break;
             }
         }

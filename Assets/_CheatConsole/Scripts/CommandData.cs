@@ -9,8 +9,6 @@ public class CommandData
     public string format;
     
     public UnityEvent OnInput;
-    public Action OnInputAction;
 
-    public void RaiseUnityEvent() => OnInput?.Invoke();
-    public void RaiseAction() => OnInputAction?.Invoke();
+    public void RaiseEvent() => OnInput?.Invoke();
 }

@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_CheatConsole/Scenes/CheatConsoleDemo.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/_CheatConsole/Scenes/Test.unity
+    guid: 3a93984044d31374da9098c7fa876bc1
   m_configObjects: {}

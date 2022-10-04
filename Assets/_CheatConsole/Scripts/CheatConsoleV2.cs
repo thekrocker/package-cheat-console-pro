@@ -79,7 +79,7 @@ public class CheatConsoleV2 : MonoBehaviour
             string cheatId = cheat.id;
             if (_input.Contains(cheatId))
             {
-                cheat.RaiseUnityEvent();
+                cheat.RaiseEvent();
             }
             else
             {
