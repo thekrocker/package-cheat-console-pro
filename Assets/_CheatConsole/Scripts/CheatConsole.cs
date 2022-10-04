@@ -1,67 +1,126 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using _CheatConsole.Scripts;
 using UnityEngine;
 
-public class CheatConsole : MonoBehaviour
+public class CheatConsole
 {
-    public KeyCode consoleKey;
-
-    private bool _showConsole;
+    private List<CommandData> _commandData;
+    private ConsoleElements _consoleElements;
 
     private string _input;
 
-    public static DebugCommand TEST_DEBUG;
-
-    private List<object> _commandList;
-
-    private void Awake()
+    public CheatConsole(List<CommandData> commandData, ConsoleElements elements)
     {
-        TEST_DEBUG = new DebugCommand("test", "testing..", "test", () => { Debug.Log("Testing.."); });
-
-        _commandList = new List<object>
-        {
-            TEST_DEBUG
-        };
+        _commandData = commandData;
+        _consoleElements = elements;
     }
 
-    private void Update()
+    public void CreateCommand(string id, Action Command, string description = "", string format = "")
     {
-        if (Input.GetKeyDown(consoleKey)) ToggleConsole();
-        
-        if (Input.GetKeyDown(KeyCode.Return))
+        _commandData.Add(new CommandData()
         {
-            if (!_showConsole) return;
-            
-            HandleInput();
-            _input = "";
-        }
+            id = id,
+            description = description,
+            format = format,
+            OnInputAction = Command
+        });
     }
+
+    public void ReadInput(string s)
+    {
+        if (s.Length == 0) return;
+
+        SetInput(s);
+        HandleInput();
+    }
+
+    public void AddListeners()
+    {
+        _consoleElements.inputField.onEndEdit.AddListener(ReadInput);
+    }
+
+    public void RemoveListeners()
+    {
+        _consoleElements.inputField.onEndEdit.RemoveListener(ReadInput);
+    }
+
+
+    public void SetInput(string s)
+    {
+        _input = s;
+    }
+
+    private int _failCount;
 
     private void HandleInput()
     {
-        for (int i = 0; i < _commandList.Count; i++)
+        _failCount = 0;
+
+        if (_commandData.Count == 0)
         {
-            BaseCommand command = _commandList[i] as BaseCommand;
+            AddFailedText();
+            SetInput("");
+            ClearInputText();
+            return;
         }
-        
-        
-        
+
+        foreach (CommandData cheat in _commandData)
+        {
+            string lowered = _input.ToLower();
+            string cheatId = cheat.id.ToLower();
+
+            if (!lowered.Equals(cheatId))
+            {
+                _failCount++;
+            }
+            else
+            {
+                AddTextToConsole(_input);
+                AddSuccessText();
+                cheat.RaiseUnityEvent();
+                cheat.RaiseAction();
+                break;
+            }
+        }
+
+        if (AllCommandsFailed()) AddFailedText();
+
+        SetInput("");
+        ClearInputText();
     }
 
-    private void ToggleConsole()
+    private bool AllCommandsFailed() => _failCount >= _commandData.Count;
+
+    public void AddTextToConsole(string s)
     {
-        _showConsole = !_showConsole;
+        _consoleElements.consoleText.text += "\n" + s;
+        _consoleElements.scrollRect.verticalNormalizedPosition = 0f;
     }
 
-    private void OnGUI()
+    public void ToggleConsole()
     {
-        if (!_showConsole) return;
+        _consoleElements.consoleCanvas.SetActive(!_consoleElements.consoleCanvas.activeInHierarchy);
+        if (_consoleElements.consoleCanvas.activeInHierarchy) ActivateInputField();
+    }
 
-        float y = 0f;
-        GUI.Box(new Rect(0, y, Screen.width, 30), "");
-        GUI.backgroundColor = new Color(0, 0, 0, 0);
-        _input = GUI.TextField(new Rect(10f, y + 5f, Screen.width - 20f, 20f), _input);
+    public void ClearInputText()
+    {
+        _consoleElements.inputField.text = "";
+        ActivateInputField();
+    }
+
+    private void ActivateInputField()
+    {
+        _consoleElements.inputField.ActivateInputField();
+    }
+
+    public void AddSuccessText(string s = "")
+    {
+        AddTextToConsole("Command success!");
+    }
+
+    public void AddFailedText()
+    {
+        AddTextToConsole($"There is no command : {_consoleElements.inputField.text} ");
     }
 }
