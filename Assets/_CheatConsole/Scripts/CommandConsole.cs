@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class CheatConsole
+public class CommandConsole
 {
     private List<CommandData> _commandData;
     private ConsoleElements _consoleElements;
 
     private string _input;
 
-    public CheatConsole(List<CommandData> commandData, ConsoleElements elements)
+    public CommandConsole(List<CommandData> commandData, ConsoleElements elements)
     {
         _commandData = commandData;
         _consoleElements = elements;
@@ -68,12 +68,12 @@ public class CheatConsole
             return;
         }
 
-        foreach (CommandData cheat in _commandData)
+        foreach (CommandData command in _commandData)
         {
             string lowered = _input.ToLower();
-            string cheatId = cheat.id.ToLower();
+            string commandId = command.id.ToLower();
 
-            if (!lowered.Equals(cheatId))
+            if (!lowered.Equals(commandId))
             {
                 _failCount++;
             }
@@ -81,7 +81,7 @@ public class CheatConsole
             {
                 AddTextToConsole(_input);
                 AddSuccessText();
-                cheat.RaiseEvent();
+                command.RaiseEvent();
                 break;
             }
         }

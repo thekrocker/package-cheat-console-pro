@@ -5,9 +5,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CheatConsoleManager : MonoBehaviour
+[DefaultExecutionOrder(-100)]
+public class CommandConsoleManager : MonoBehaviour
 {
-    public static CheatConsoleManager Instance;
+    public static CommandConsoleManager Instance;
 
     [Header("Console Shortcut")] public KeyCode consoleKey = KeyCode.BackQuote;
 
@@ -15,18 +16,18 @@ public class CheatConsoleManager : MonoBehaviour
 
     [Header("Elements")] [SerializeField] public ConsoleElements consoleElements;
 
-    private CheatConsole _cheatConsole;
+    private CommandConsole _commandConsole;
 
     private void Awake() => Initialize();
-    private void OnEnable() => _cheatConsole.AddListeners();
-    private void OnDisable() => _cheatConsole.RemoveListeners();
+    private void OnEnable() => _commandConsole.AddListeners();
+    private void OnDisable() => _commandConsole.RemoveListeners();
     private void Update()
     {
         if (Input.GetKeyDown(consoleKey))
         {
-            _cheatConsole.ToggleConsole();
-            _cheatConsole.SetInput("");
-            _cheatConsole.ClearInputText();
+            _commandConsole.ToggleConsole();
+            _commandConsole.SetInput("");
+            _commandConsole.ClearInputText();
         }
     }
     
@@ -34,13 +35,13 @@ public class CheatConsoleManager : MonoBehaviour
     // USE THIS TO CREATE COMMANDS.
     public static void CreateCommand(string id, Action Command, string description = "", string format = "")
     {
-        Instance._cheatConsole.CreateCommand(id, Command, description, format);
+        Instance._commandConsole.CreateCommand(id, Command, description, format);
     }
 
     //
     private void InitCheatConsole()
     {
-        _cheatConsole = new CheatConsole(commandData, consoleElements);
+        _commandConsole = new CommandConsole(commandData, consoleElements);
     }
     private void CreateInstance()
     {

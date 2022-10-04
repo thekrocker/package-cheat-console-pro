@@ -21,7 +21,7 @@ public class GeneralCommandController : MonoBehaviour
 
     private void Create(string id, Action command, string description = "", string format = "")
     {
-        CheatConsoleManager.CreateCommand(id, command, description, format);
+        CommandConsoleManager.CreateCommand(id, command, description, format);
     }
 
 }
