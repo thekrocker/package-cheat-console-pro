@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [DefaultExecutionOrder(-100)]
+[RequireComponent(typeof(GeneralCommandController))]
 public class CommandConsoleManager : MonoBehaviour
 {
     public static CommandConsoleManager Instance;

@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using _CheatConsole.Scripts;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GeneralCommandController : MonoBehaviour
 {
@@ -13,10 +10,11 @@ public class GeneralCommandController : MonoBehaviour
     {
         _allCommands = new Commands();
         
-        Create("freeze", _allCommands.FreezeTime);
+        Create("freeze", _allCommands.FreezeTime, "freezing the time");
         Create("unfreeze", _allCommands.UnfreezeTime);
         Create("restart", _allCommands.Restart);
         Create("next", _allCommands.LoadNextScene);
+        Create("Quit", _allCommands.Quit);
     }
 
     private void Create(string id, Action command, string description = "", string format = "")

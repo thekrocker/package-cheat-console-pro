@@ -80,7 +80,7 @@ public class CommandConsole
             else
             {
                 AddTextToConsole(_input);
-                AddSuccessText();
+                AddSuccessText(command.description);
                 command.RaiseEvent();
                 break;
             }
@@ -102,7 +102,7 @@ public class CommandConsole
 
     public void ToggleConsole()
     {
-        _consoleElements.consoleCanvas.SetActive(!_consoleElements.consoleCanvas.activeInHierarchy);
+        _consoleElements.consoleCanvas.SetActive(true);
         if (_consoleElements.consoleCanvas.activeInHierarchy) ActivateInputField();
     }
 
@@ -119,7 +119,7 @@ public class CommandConsole
 
     public void AddSuccessText(string s = "")
     {
-        AddTextToConsole("Command success!");
+        AddTextToConsole("Command success! " + s);
     }
 
     public void AddFailedText()

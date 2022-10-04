@@ -16,5 +16,8 @@ namespace _CheatConsole.Scripts
         
         // Loads next scene, if there is no next scene.. Loops through all scenes.
         public void LoadNextScene() => SceneManager.LoadScene((SceneManager.GetActiveScene().buildIndex + 1) % SceneManager.sceneCountInBuildSettings);
+        
+        // Quits
+        public void Quit() => Application.Quit();
     }
 }
